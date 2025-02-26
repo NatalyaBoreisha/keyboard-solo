@@ -48,13 +48,14 @@ function handleKeydown(event) {
     
     if (currentIndex < currentWord.length) {
         if (key === currentWord[currentIndex]) {
+            spans[currentIndex].classList.remove("w");
             spans[currentIndex].classList.add("c");
+            currentIndex++;
         } else {
             spans[currentIndex].classList.add("w");
             wordMistakes++;
             wordMistakesEl.textContent = wordMistakes;
         }
-        currentIndex++;
     }
     
     if (currentIndex === currentWord.length) {
