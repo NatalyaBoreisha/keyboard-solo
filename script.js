@@ -18,7 +18,7 @@ function getRandomWord() {
 
 function renderWord() {
     wordContainer.innerHTML = "";
-    currentWord.split("" ).forEach(letter => {
+    currentWord.split("").forEach(letter => {
         const span = document.createElement("span");
         span.textContent = letter;
         wordContainer.appendChild(span);
@@ -34,7 +34,7 @@ function startNewWord() {
         resetGame();
         return;
     } else if (wrongCount >= 5) {
-        alert("ты проиграл:(");
+        alert("Ты проиграл:(");
         resetGame();
         return;
     }
@@ -49,31 +49,24 @@ function handleKeydown(event) {
     if (currentIndex < currentWord.length) {
         if (key === currentWord[currentIndex]) {
             spans[currentIndex].classList.add("c");
-            currentIndex++;
-            if (currentIndex === currentWord.length) {
-                correctCount++;
-                correctCountEl.textContent = correctCount;
-                setTimeout(startNewWord, 1000);
-            }
         } else {
             spans[currentIndex].classList.add("w");
             wordMistakes++;
             wordMistakesEl.textContent = wordMistakes;
-            if (wordMistakes >= currentWord.length) {
-                wrongCount++;
-                wrongCountEl.textContent = wrongCount;
-                setTimeout(startNewWord, 1000);
-            }
         }
+        currentIndex++;
     }
-}
-
-function debounce(func, delay) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
-    };
+    
+    if (currentIndex === currentWord.length) {
+        if (wordMistakes > 0) {
+            wrongCount++;
+            wrongCountEl.textContent = wrongCount;
+        } else {
+            correctCount++;
+            correctCountEl.textContent = correctCount;
+        }
+        setTimeout(startNewWord, 0);
+    }
 }
 
 function startTimer() {
@@ -96,7 +89,7 @@ function resetGame() {
     startNewWord();
 }
 
-document.addEventListener("keydown", debounce(handleKeydown, 100));
+document.addEventListener("keydown", handleKeydown);
 
 startTimer();
 startNewWord();
